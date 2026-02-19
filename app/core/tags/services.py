@@ -4,18 +4,18 @@ from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.common.exceptions import OctoError
+from app.common.exceptions import TaskManagerError
 from app.common.pagination import Page, Paginator
 from app.core.tags.models import Tag
 from app.error_codes import ErrorCodes
 
 
-class TagNotFoundError(OctoError):
+class TagNotFoundError(TaskManagerError):
     code = ErrorCodes.TAG_NOT_FOUND
     message = "Tag not found"
 
 
-class TagNameExistsError(OctoError):
+class TagNameExistsError(TaskManagerError):
     code = ErrorCodes.TAG_NAME_EXISTS
     message = "Tag with this name already exists"
 

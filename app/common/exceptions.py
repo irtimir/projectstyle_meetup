@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 
-class OctoError(Exception):
+class TaskManagerError(Exception):
     code: str = "error"
     message: str = "An error occurred"
 
@@ -28,6 +28,6 @@ class OctoError(Exception):
         return result
 
 
-class PermissionDeniedError(OctoError):
+class PermissionDeniedError(TaskManagerError):
     code = "forbidden"
     message = "Permission denied"

@@ -4,13 +4,13 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.common.exceptions import OctoError
+from app.common.exceptions import TaskManagerError
 from app.common.pagination import Page, Paginator
 from app.core.comments.models import Comment
 from app.error_codes import ErrorCodes
 
 
-class CommentNotFoundError(OctoError):
+class CommentNotFoundError(TaskManagerError):
     code = ErrorCodes.COMMENT_NOT_FOUND
     message = "Comment not found"
 

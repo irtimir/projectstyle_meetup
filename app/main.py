@@ -12,7 +12,7 @@ from app.api.client.tags.router import router as tags_router
 from app.api.client.tasks.router import router as tasks_router
 from app.api.client.users.router import router as users_router
 from app.api.exceptions import APIException
-from app.common.exceptions import OctoError
+from app.common.exceptions import TaskManagerError
 from app.error_codes import ErrorCodes
 
 app = FastAPI(
@@ -30,8 +30,8 @@ async def api_exception_handler(request: Request, exc: APIException) -> JSONResp
     )
 
 
-@app.exception_handler(OctoError)
-async def octo_error_handler(request: Request, exc: OctoError) -> JSONResponse:
+@app.exception_handler(TaskManagerError)
+async def octo_error_handler(request: Request, exc: TaskManagerError) -> JSONResponse:
     status_map: dict[str, int] = {
         ErrorCodes.NOT_FOUND: status.HTTP_404_NOT_FOUND,
         ErrorCodes.USER_NOT_FOUND: status.HTTP_404_NOT_FOUND,
