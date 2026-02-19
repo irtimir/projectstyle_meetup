@@ -15,7 +15,7 @@ jobs:
         with:
           version: "latest"
 
-      - run: uv sync
+      - run: uv sync --all-extras
 
       - name: Ruff check
         run: uv run ruff check .
@@ -28,6 +28,8 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: sqlite+aiosqlite:///./test.db
     steps:
       - uses: actions/checkout@v4
 
@@ -35,7 +37,10 @@ jobs:
         with:
           version: "latest"
 
-      - run: uv sync
+      - run: uv sync --all-extras
+
+      - name: Run migrations
+        run: uv run alembic upgrade head
 
       - name: Run tests
         run: uv run pytest

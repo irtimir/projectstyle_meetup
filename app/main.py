@@ -17,7 +17,7 @@ from app.error_codes import ErrorCodes
 
 app = FastAPI(
     title="Task Manager API",
-    description="Demo Task Manager API for webinar",
+    description="Demo Task Manager API",
     version="0.1.0",
 )
 

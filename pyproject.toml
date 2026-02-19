@@ -1,7 +1,7 @@
 [project]
 name = "task-manager"
 version = "0.1.0"
-description = "Demo Task Manager API for webinar"
+description = "Demo Task Manager API"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.129.0",
