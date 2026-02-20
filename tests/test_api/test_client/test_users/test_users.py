@@ -62,7 +62,7 @@ class TestGetUser:
         response = await client.get("/api/users/999")
         assert response.status_code == 404
         data = response.json()
-        assert data["code"] == ErrorCodes.USER_NOT_FOUND
+        assert data["code"] == ErrorCodes.USER_NOT_FOUND.code_id
 
 
 class TestGetCurrentUser:
@@ -79,7 +79,7 @@ class TestGetCurrentUser:
         response = await client.get("/api/users/me")
         assert response.status_code == 401
         data = response.json()
-        assert data["code"] == ErrorCodes.UNAUTHORIZED
+        assert data["code"] == ErrorCodes.UNAUTHORIZED.code_id
 
 
 class TestCreateUser:
@@ -104,7 +104,7 @@ class TestCreateUser:
         )
         assert response.status_code == 409
         data = response.json()
-        assert data["code"] == ErrorCodes.USER_EMAIL_EXISTS
+        assert data["code"] == ErrorCodes.USER_EMAIL_EXISTS.code_id
 
     async def test_create_user_invalid_email(self, client: AsyncClient):
         response = await client.post(
@@ -113,7 +113,7 @@ class TestCreateUser:
         )
         assert response.status_code == 422
         data = response.json()
-        assert data["code"] == ErrorCodes.VALIDATION_ERROR
+        assert data["code"] == ErrorCodes.VALIDATION_ERROR.code_id
 
 
 class TestUpdateUser:
@@ -133,7 +133,7 @@ class TestUpdateUser:
         response = await client.patch("/api/users/999", json={"name": "Name"})
         assert response.status_code == 404
         data = response.json()
-        assert data["code"] == ErrorCodes.USER_NOT_FOUND
+        assert data["code"] == ErrorCodes.USER_NOT_FOUND.code_id
 
 
 class TestDeleteUser:
@@ -151,4 +151,4 @@ class TestDeleteUser:
         response = await client.delete("/api/users/999")
         assert response.status_code == 404
         data = response.json()
-        assert data["code"] == ErrorCodes.USER_NOT_FOUND
+        assert data["code"] == ErrorCodes.USER_NOT_FOUND.code_id

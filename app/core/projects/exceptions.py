@@ -5,5 +5,4 @@ from app.error_codes import ErrorCodes
 
 
 class ProjectNotFoundError(TaskManagerError):
-    code = ErrorCodes.PROJECT_NOT_FOUND
-    message = "Project not found"
+    error = ErrorCodes.PROJECT_NOT_FOUND

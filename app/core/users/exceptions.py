@@ -5,10 +5,8 @@ from app.error_codes import ErrorCodes
 
 
 class UserNotFoundError(TaskManagerError):
-    code = ErrorCodes.USER_NOT_FOUND
-    message = "User not found"
+    error = ErrorCodes.USER_NOT_FOUND
 
 
 class UserEmailExistsError(TaskManagerError):
-    code = ErrorCodes.USER_EMAIL_EXISTS
-    message = "User with this email already exists"
+    error = ErrorCodes.USER_EMAIL_EXISTS

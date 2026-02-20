@@ -5,7 +5,7 @@ from typing import Annotated
 from fastapi import APIRouter, Query, status
 
 from app.api.client.tasks import schemas
-from app.api.dependencies import CurrentUserRequired, DbSession, PaginationDep
+from app.api.dependencies import CurrentUser, DbSession, LimitOffetPagination
 from app.api.exceptions import BadRequestError, NotFoundError
 from app.api.schemas import PaginatedResponse
 from app.core.tasks.exceptions import TaskAlreadyCompletedError, TaskNotFoundError
@@ -18,7 +18,7 @@ router = APIRouter(prefix="/tasks", tags=["tasks"])
 @router.get("", response_model=PaginatedResponse[schemas.TaskListSerializer])
 async def list_tasks_view(
     session: DbSession,
-    pagination: PaginationDep,
+    pagination: LimitOffetPagination,
     project_id: Annotated[int | None, Query()] = None,
     assignee_id: Annotated[int | None, Query()] = None,
     status_filter: Annotated[TaskStatus | None, Query(alias="status")] = None,
@@ -57,7 +57,7 @@ async def get_task_view(
 @router.post("", response_model=schemas.TaskSerializer, status_code=status.HTTP_201_CREATED)
 async def create_task_view(
     session: DbSession,
-    _user: CurrentUserRequired,
+    _user: CurrentUser,
     data: schemas.CreateTaskValidator,
 ) -> schemas.TaskSerializer:
     service = TaskService(session)
@@ -75,7 +75,7 @@ async def create_task_view(
 @router.patch("/{task_id}", response_model=schemas.TaskSerializer)
 async def update_task_view(
     session: DbSession,
-    _user: CurrentUserRequired,
+    _user: CurrentUser,
     task_id: int,
     data: schemas.UpdateTaskValidator,
 ) -> schemas.TaskSerializer:
@@ -96,7 +96,7 @@ async def update_task_view(
 @router.delete("/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_task_view(
     session: DbSession,
-    _user: CurrentUserRequired,
+    _user: CurrentUser,
     task_id: int,
 ) -> None:
     service = TaskService(session)
@@ -109,7 +109,7 @@ async def delete_task_view(
 @router.post("/{task_id}/assign", response_model=schemas.TaskSerializer)
 async def assign_task_view(
     session: DbSession,
-    _user: CurrentUserRequired,
+    _user: CurrentUser,
     task_id: int,
     data: schemas.AssignTaskValidator,
 ) -> schemas.TaskSerializer:
@@ -124,7 +124,7 @@ async def assign_task_view(
 @router.post("/{task_id}/complete", response_model=schemas.TaskSerializer)
 async def complete_task_view(
     session: DbSession,
-    _user: CurrentUserRequired,
+    _user: CurrentUser,
     task_id: int,
 ) -> schemas.TaskSerializer:
     service = TaskService(session)

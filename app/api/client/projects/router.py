@@ -6,7 +6,7 @@ from fastapi import APIRouter, Query, status
 
 from app.api.client.projects import schemas
 from app.api.client.tasks import schemas as task_schemas
-from app.api.dependencies import CurrentUserRequired, DbSession, GetAccessContext, PaginationDep
+from app.api.dependencies import CurrentUser, DbSession, GetAccessContext, LimitOffetPagination
 from app.api.exceptions import ForbiddenError, NotFoundError
 from app.api.schemas import PaginatedResponse
 from app.common.rules import is_owner
@@ -21,7 +21,7 @@ router = APIRouter(prefix="/projects", tags=["projects"])
 @router.get("", response_model=PaginatedResponse[schemas.ProjectListSerializer])
 async def list_projects_view(
     session: DbSession,
-    pagination: PaginationDep,
+    pagination: LimitOffetPagination,
     owner_id: Annotated[int | None, Query()] = None,
 ) -> PaginatedResponse[schemas.ProjectListSerializer]:
     offset, limit = pagination
@@ -47,7 +47,7 @@ async def get_project_view(
 async def get_project_tasks_view(
     session: DbSession,
     project_id: int,
-    pagination: PaginationDep,
+    pagination: LimitOffetPagination,
 ) -> PaginatedResponse[task_schemas.TaskListSerializer]:
     project_service = ProjectService(session)
     try:
@@ -64,7 +64,7 @@ async def get_project_tasks_view(
 @router.post("", response_model=schemas.ProjectSerializer, status_code=status.HTTP_201_CREATED)
 async def create_project_view(
     session: DbSession,
-    user: CurrentUserRequired,
+    user: CurrentUser,
     data: schemas.CreateProjectValidator,
 ) -> schemas.ProjectSerializer:
     service = ProjectService(session)

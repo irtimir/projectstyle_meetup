@@ -1,16 +1,15 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, ClassVar
 
 from fastapi import HTTPException, status
 
-from app.error_codes import ErrorCodes
+from app.error_codes import ErrorCode, ErrorCodes
 
 
 class APIException(HTTPException):
     status_code: int = status.HTTP_400_BAD_REQUEST
-    code: str = ErrorCodes.VALIDATION_ERROR
-    message: str = "Bad request"
+    error: ClassVar[ErrorCode] = ErrorCodes.VALIDATION_ERROR
 
     def __init__(
         self,
@@ -18,8 +17,8 @@ class APIException(HTTPException):
         code: str | None = None,
         errors: dict[str, Any] | None = None,
     ) -> None:
-        self.code = code or self.code
-        self.message = message or self.message
+        self.code = code or self.error.code_id
+        self.message = message or self.error.message
         self.errors = errors
         detail: dict[str, Any] = {
             "code": self.code,
@@ -32,29 +31,24 @@ class APIException(HTTPException):
 
 class BadRequestError(APIException):
     status_code = status.HTTP_400_BAD_REQUEST
-    code = ErrorCodes.VALIDATION_ERROR
-    message = "Bad request"
+    error = ErrorCodes.VALIDATION_ERROR
 
 
 class UnauthorizedError(APIException):
     status_code = status.HTTP_401_UNAUTHORIZED
-    code = ErrorCodes.UNAUTHORIZED
-    message = "Authentication required"
+    error = ErrorCodes.UNAUTHORIZED
 
 
 class ForbiddenError(APIException):
     status_code = status.HTTP_403_FORBIDDEN
-    code = ErrorCodes.FORBIDDEN
-    message = "Permission denied"
+    error = ErrorCodes.FORBIDDEN
 
 
 class NotFoundError(APIException):
     status_code = status.HTTP_404_NOT_FOUND
-    code = ErrorCodes.NOT_FOUND
-    message = "Resource not found"
+    error = ErrorCodes.NOT_FOUND
 
 
 class ConflictError(APIException):
     status_code = status.HTTP_409_CONFLICT
-    code = ErrorCodes.ALREADY_EXISTS
-    message = "Resource already exists"
+    error = ErrorCodes.ALREADY_EXISTS

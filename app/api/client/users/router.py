@@ -5,7 +5,7 @@ from typing import Annotated
 from fastapi import APIRouter, Query, status
 
 from app.api.client.users import schemas
-from app.api.dependencies import CurrentUserRequired, DbSession, PaginationDep
+from app.api.dependencies import CurrentUser, DbSession, LimitOffetPagination
 from app.api.exceptions import ConflictError, NotFoundError
 from app.api.schemas import PaginatedResponse
 from app.core.users.exceptions import UserEmailExistsError, UserNotFoundError
@@ -17,7 +17,7 @@ router = APIRouter(prefix="/users", tags=["users"])
 @router.get("", response_model=PaginatedResponse[schemas.UserListSerializer])
 async def list_users_view(
     session: DbSession,
-    pagination: PaginationDep,
+    pagination: LimitOffetPagination,
     search: Annotated[str | None, Query()] = None,
 ) -> PaginatedResponse[schemas.UserListSerializer]:
     offset, limit = pagination
@@ -28,7 +28,7 @@ async def list_users_view(
 
 @router.get("/me", response_model=schemas.UserSerializer)
 async def get_current_user_view(
-    user: CurrentUserRequired,
+    user: CurrentUser,
 ) -> schemas.UserSerializer:
     return schemas.UserSerializer.model_validate(user)
 

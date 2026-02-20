@@ -3,7 +3,7 @@ from __future__ import annotations
 from fastapi import APIRouter, status
 
 from app.api.client.comments import schemas
-from app.api.dependencies import CurrentUserRequired, DbSession, GetAccessContext, PaginationDep
+from app.api.dependencies import CurrentUser, DbSession, GetAccessContext, LimitOffetPagination
 from app.api.exceptions import ForbiddenError, NotFoundError
 from app.api.schemas import PaginatedResponse
 from app.common.rules import is_owner
@@ -19,7 +19,7 @@ router = APIRouter(tags=["comments"])
 async def list_task_comments_view(
     session: DbSession,
     task_id: int,
-    pagination: PaginationDep,
+    pagination: LimitOffetPagination,
 ) -> PaginatedResponse[schemas.CommentListSerializer]:
     task_service = TaskService(session)
     try:
@@ -36,7 +36,7 @@ async def list_task_comments_view(
 @router.post("/tasks/{task_id}/comments", response_model=schemas.CommentSerializer, status_code=status.HTTP_201_CREATED)
 async def create_comment_view(
     session: DbSession,
-    user: CurrentUserRequired,
+    user: CurrentUser,
     task_id: int,
     data: schemas.CreateCommentValidator,
 ) -> schemas.CommentSerializer:

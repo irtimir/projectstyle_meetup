@@ -20,7 +20,7 @@ async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
 DbSession = Annotated[AsyncSession, Depends(get_db_session)]
 
 
-async def get_current_user(
+async def maybe_get_current_user(
     session: DbSession,
     x_user_id: Annotated[int | None, Header()] = None,
 ) -> User | None:
@@ -30,30 +30,30 @@ async def get_current_user(
     return user
 
 
-CurrentUser = Annotated[User | None, Depends(get_current_user)]
+MaybeCurrentUser = Annotated[User | None, Depends(maybe_get_current_user)]
 
 
-async def get_current_user_required(user: CurrentUser) -> User:
+async def get_current_user(user: MaybeCurrentUser) -> User:
     if user is None:
         raise UnauthorizedError()
     return user
 
 
-CurrentUserRequired = Annotated[User, Depends(get_current_user_required)]
+CurrentUser = Annotated[User, Depends(get_current_user)]
 
 
-async def get_access_context(user: CurrentUser) -> AccessContext:
+async def get_access_context(user: MaybeCurrentUser) -> AccessContext:
     return AccessContext(user=user)  # type: ignore[arg-type]
 
 
 GetAccessContext = Annotated[AccessContext, Depends(get_access_context)]
 
 
-def pagination_params(
+def limit_offset_pagination_params(
     offset: Annotated[int, Query(ge=0)] = 0,
     limit: Annotated[int, Query(ge=1, le=100)] = 20,
 ) -> tuple[int, int]:
     return offset, limit
 
 
-PaginationDep = Annotated[tuple[int, int], Depends(pagination_params)]
+LimitOffetPagination = Annotated[tuple[int, int], Depends(limit_offset_pagination_params)]

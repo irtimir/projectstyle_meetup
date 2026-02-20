@@ -53,7 +53,7 @@ class TestGetProject:
         response = await client.get("/api/projects/999")
         assert response.status_code == 404
         data = response.json()
-        assert data["code"] == ErrorCodes.PROJECT_NOT_FOUND
+        assert data["code"] == ErrorCodes.PROJECT_NOT_FOUND.code_id
 
 
 class TestGetProjectTasks:
@@ -73,7 +73,7 @@ class TestGetProjectTasks:
         response = await client.get("/api/projects/999/tasks")
         assert response.status_code == 404
         data = response.json()
-        assert data["code"] == ErrorCodes.PROJECT_NOT_FOUND
+        assert data["code"] == ErrorCodes.PROJECT_NOT_FOUND.code_id
 
 
 class TestCreateProject:
@@ -98,7 +98,7 @@ class TestCreateProject:
         )
         assert response.status_code == 401
         data = response.json()
-        assert data["code"] == ErrorCodes.UNAUTHORIZED
+        assert data["code"] == ErrorCodes.UNAUTHORIZED.code_id
 
 
 class TestUpdateProject:
@@ -129,7 +129,7 @@ class TestUpdateProject:
         )
         assert response.status_code == 403
         data = response.json()
-        assert data["code"] == ErrorCodes.FORBIDDEN
+        assert data["code"] == ErrorCodes.FORBIDDEN.code_id
 
     async def test_update_project_not_found(self, client: AsyncClient, session):
         user = await UserFactory.create_async(session)
@@ -167,4 +167,4 @@ class TestDeleteProject:
         )
         assert response.status_code == 403
         data = response.json()
-        assert data["code"] == ErrorCodes.FORBIDDEN
+        assert data["code"] == ErrorCodes.FORBIDDEN.code_id

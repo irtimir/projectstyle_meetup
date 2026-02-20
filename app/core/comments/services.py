@@ -11,8 +11,7 @@ from app.error_codes import ErrorCodes
 
 
 class CommentNotFoundError(TaskManagerError):
-    code = ErrorCodes.COMMENT_NOT_FOUND
-    message = "Comment not found"
+    error = ErrorCodes.COMMENT_NOT_FOUND
 
 
 class CommentService:

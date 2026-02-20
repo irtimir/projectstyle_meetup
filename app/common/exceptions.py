@@ -1,20 +1,20 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, ClassVar
+
+from app.error_codes import ErrorCode, ErrorCodes
 
 
 class TaskManagerError(Exception):
-    code: str = "error"
-    message: str = "An error occurred"
+    error: ClassVar[ErrorCode] = ErrorCodes.VALIDATION_ERROR
 
     def __init__(
         self,
         message: str | None = None,
-        code: str | None = None,
         details: dict[str, Any] | None = None,
     ) -> None:
-        self.message = message or self.message
-        self.code = code or self.code
+        self.message = message or self.error.message
+        self.code = self.error.code_id
         self.details = details or {}
         super().__init__(self.message)
 
@@ -29,5 +29,4 @@ class TaskManagerError(Exception):
 
 
 class PermissionDeniedError(TaskManagerError):
-    code = "forbidden"
-    message = "Permission denied"
+    error = ErrorCodes.FORBIDDEN

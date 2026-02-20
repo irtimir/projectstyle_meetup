@@ -94,7 +94,7 @@ class TestGetTask:
         response = await client.get("/api/tasks/999")
         assert response.status_code == 404
         data = response.json()
-        assert data["code"] == ErrorCodes.TASK_NOT_FOUND
+        assert data["code"] == ErrorCodes.TASK_NOT_FOUND.code_id
 
 
 class TestCreateTask:
@@ -235,4 +235,4 @@ class TestCompleteTask:
         )
         assert response.status_code == 400
         data = response.json()
-        assert data["code"] == ErrorCodes.TASK_ALREADY_COMPLETED
+        assert data["code"] == ErrorCodes.TASK_ALREADY_COMPLETED.code_id

@@ -63,7 +63,7 @@ class TestCreateTag:
         )
         assert response.status_code == 409
         data = response.json()
-        assert data["code"] == ErrorCodes.TAG_NAME_EXISTS
+        assert data["code"] == ErrorCodes.TAG_NAME_EXISTS.code_id
 
     async def test_create_tag_unauthorized(self, client: AsyncClient):
         response = await client.post("/api/tags", json={"name": "tag"})
@@ -92,4 +92,4 @@ class TestDeleteTag:
         )
         assert response.status_code == 404
         data = response.json()
-        assert data["code"] == ErrorCodes.TAG_NOT_FOUND
+        assert data["code"] == ErrorCodes.TAG_NOT_FOUND.code_id

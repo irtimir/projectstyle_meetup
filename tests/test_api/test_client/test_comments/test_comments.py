@@ -34,7 +34,7 @@ class TestListTaskComments:
         response = await client.get("/api/tasks/999/comments")
         assert response.status_code == 404
         data = response.json()
-        assert data["code"] == ErrorCodes.TASK_NOT_FOUND
+        assert data["code"] == ErrorCodes.TASK_NOT_FOUND.code_id
 
 
 class TestCreateComment:
@@ -80,7 +80,7 @@ class TestCreateComment:
         )
         assert response.status_code == 404
         data = response.json()
-        assert data["code"] == ErrorCodes.TASK_NOT_FOUND
+        assert data["code"] == ErrorCodes.TASK_NOT_FOUND.code_id
 
 
 class TestDeleteComment:
@@ -111,7 +111,7 @@ class TestDeleteComment:
         )
         assert response.status_code == 403
         data = response.json()
-        assert data["code"] == ErrorCodes.FORBIDDEN
+        assert data["code"] == ErrorCodes.FORBIDDEN.code_id
 
     async def test_delete_comment_not_found(self, client: AsyncClient, session):
         user = await UserFactory.create_async(session)
@@ -123,4 +123,4 @@ class TestDeleteComment:
         )
         assert response.status_code == 404
         data = response.json()
-        assert data["code"] == ErrorCodes.COMMENT_NOT_FOUND
+        assert data["code"] == ErrorCodes.COMMENT_NOT_FOUND.code_id

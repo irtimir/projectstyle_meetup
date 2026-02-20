@@ -5,15 +5,12 @@ from app.error_codes import ErrorCodes
 
 
 class TaskNotFoundError(TaskManagerError):
-    code = ErrorCodes.TASK_NOT_FOUND
-    message = "Task not found"
+    error = ErrorCodes.TASK_NOT_FOUND
 
 
 class TaskAlreadyCompletedError(TaskManagerError):
-    code = ErrorCodes.TASK_ALREADY_COMPLETED
-    message = "Task is already completed"
+    error = ErrorCodes.TASK_ALREADY_COMPLETED
 
 
 class TaskInvalidStatusError(TaskManagerError):
-    code = ErrorCodes.TASK_INVALID_STATUS
-    message = "Invalid task status transition"
+    error = ErrorCodes.TASK_INVALID_STATUS

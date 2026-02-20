@@ -11,13 +11,11 @@ from app.error_codes import ErrorCodes
 
 
 class TagNotFoundError(TaskManagerError):
-    code = ErrorCodes.TAG_NOT_FOUND
-    message = "Tag not found"
+    error = ErrorCodes.TAG_NOT_FOUND
 
 
 class TagNameExistsError(TaskManagerError):
-    code = ErrorCodes.TAG_NAME_EXISTS
-    message = "Tag with this name already exists"
+    error = ErrorCodes.TAG_NAME_EXISTS
 
 
 class TagService:
