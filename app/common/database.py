@@ -20,14 +20,6 @@ class Database:
             expire_on_commit=False,
         )
 
-    async def create_tables(self) -> None:
-        async with self.engine.begin() as conn:
-            await conn.run_sync(Base.metadata.create_all)
-
-    async def drop_tables(self) -> None:
-        async with self.engine.begin() as conn:
-            await conn.run_sync(Base.metadata.drop_all)
-
     @asynccontextmanager
     async def session(self) -> AsyncGenerator[AsyncSession, None]:
         async with self.session_factory() as session:
